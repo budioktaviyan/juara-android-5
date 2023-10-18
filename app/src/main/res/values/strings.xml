@@ -1,10 +1,8 @@
 <resources>
   <string name="app_name">Juara Android</string>
-  <string name="run_a_race">Run a race</string>
-  <string name="pause">Pause</string>
-  <string name="start">Start</string>
-  <string name="reset">Reset</string>
-  <string name="progress_percentage">%1$d%%</string>
-  <string name="player_one_name">Player 1</string>
-  <string name="player_two_name">Player 2</string>
+  <string name="loading_failed">Failed to load</string>
+  <string name="placeholder_result">Placeholder result text</string>
+  <string name="retry">Retry</string>
+  <string name="loading">Loading</string>
+  <string name="mars_photo">Mars photo</string>
 </resources>
