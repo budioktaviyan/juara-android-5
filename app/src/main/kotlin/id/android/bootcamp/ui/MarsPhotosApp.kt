@@ -2,6 +2,7 @@
 
 package id.android.bootcamp.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +21,7 @@ import id.android.bootcamp.R
 import id.android.bootcamp.ui.screen.HomeScreen
 import id.android.bootcamp.ui.screen.MarsViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MarsPhotosApp() {
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -31,7 +33,7 @@ fun MarsPhotosApp() {
       val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
       HomeScreen(
         marsUiState = marsViewModel.marsUiState,
-        contentPadding = it
+        retryAction = marsViewModel::getMarsPhotos
       )
     }
   }
