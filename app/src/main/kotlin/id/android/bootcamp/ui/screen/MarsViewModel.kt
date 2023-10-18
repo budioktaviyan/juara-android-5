@@ -11,8 +11,8 @@ import java.io.IOException
 
 sealed interface MarsUiState {
   data class Success(val photos: String) : MarsUiState
-  object Error : MarsUiState
-  object Loading : MarsUiState
+  data object Error : MarsUiState
+  data object Loading : MarsUiState
 }
 
 class MarsViewModel : ViewModel() {
@@ -32,11 +32,11 @@ class MarsViewModel : ViewModel() {
    * Gets Mars photos information from the Mars API Retrofit service and updates the
    * [MarsPhoto] [List] [MutableList]
    */
-  fun getMarsPhotos() {
+  private fun getMarsPhotos() {
     viewModelScope.launch {
       marsUiState = try {
         val listResult = MarsApi.retrofitService.getPhotos()
-        MarsUiState.Success(listResult)
+        MarsUiState.Success("Success: ${listResult.size} Mars photos retrieved")
       } catch (e: IOException) {
         MarsUiState.Error
       }
