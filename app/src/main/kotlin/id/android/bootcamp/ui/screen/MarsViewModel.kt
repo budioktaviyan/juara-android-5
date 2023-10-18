@@ -4,8 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import id.android.bootcamp.data.NetworkMarsPhotosRepository
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import id.android.bootcamp.MarsPhotosApplication
+import id.android.bootcamp.data.MarsPhotosRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -16,7 +21,7 @@ sealed interface MarsUiState {
   data object Loading : MarsUiState
 }
 
-class MarsViewModel : ViewModel() {
+class MarsViewModel(private val repository: MarsPhotosRepository) : ViewModel() {
 
   /** The mutable State that stores the status of the most recent request */
   var marsUiState: MarsUiState by mutableStateOf(MarsUiState.Loading)
@@ -36,13 +41,23 @@ class MarsViewModel : ViewModel() {
   private fun getMarsPhotos() {
     viewModelScope.launch {
       marsUiState = try {
-        val repository = NetworkMarsPhotosRepository()
         val listResult = repository.getMarsPhotos()
         MarsUiState.Success("Success: ${listResult.size} Mars photos retrieved")
       } catch (e: IOException) {
         MarsUiState.Error
       } catch (e: HttpException) {
         MarsUiState.Error
+      }
+    }
+  }
+
+  companion object {
+
+    val Factory: ViewModelProvider.Factory = viewModelFactory {
+      initializer {
+        val application = (this[APPLICATION_KEY] as MarsPhotosApplication)
+        val repository = application.container.repository
+        MarsViewModel(repository = repository)
       }
     }
   }
