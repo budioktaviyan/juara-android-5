@@ -11,12 +11,13 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import id.android.bootcamp.MarsPhotosApplication
 import id.android.bootcamp.data.MarsPhotosRepository
+import id.android.bootcamp.network.MarsPhoto
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
 sealed interface MarsUiState {
-  data class Success(val photos: String) : MarsUiState
+  data class Success(val photos: MarsPhoto) : MarsUiState
   data object Error : MarsUiState
   data object Loading : MarsUiState
 }
@@ -41,8 +42,7 @@ class MarsViewModel(private val repository: MarsPhotosRepository) : ViewModel() 
   private fun getMarsPhotos() {
     viewModelScope.launch {
       marsUiState = try {
-        val listResult = repository.getMarsPhotos()
-        MarsUiState.Success("Success: ${listResult.size} Mars photos retrieved")
+        MarsUiState.Success(repository.getMarsPhotos()[0])
       } catch (e: IOException) {
         MarsUiState.Error
       } catch (e: HttpException) {
