@@ -109,7 +109,7 @@ private fun RaceTrackerScreen(
           R.string.progress_percentage,
           playerTwo.maxProgress
         ),
-        progressFactor = playerOne.progressFactor,
+        progressFactor = playerTwo.progressFactor,
         modifier = Modifier.fillMaxWidth()
       )
       Spacer(modifier = Modifier.size(dimensionResource(R.dimen.padding_large)))

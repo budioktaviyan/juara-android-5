@@ -3,6 +3,7 @@ package id.android.bootcamp.ui
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.delay
 
 /**
  * This class represents a state holder for race participant
@@ -25,7 +26,19 @@ class RaceParticipant(
     private set
 
   /**
-   * Regardless of the value of [initialProgress] the reset function will reset the [currentProgress] to 0
+   * Updates the value of [currentProgress] by value [progressIncrement] until it reaches
+   * [maxProgress]. There is a delay of [progressDelayMillis] between each update
+   */
+  suspend fun run() {
+    while (currentProgress < maxProgress) {
+      delay(progressDelayMillis)
+      currentProgress += progressIncrement
+    }
+  }
+
+  /**
+   * Regardless of the value of [initialProgress] the reset function will reset the
+   * [currentProgress] to 0
    */
   fun reset() {
     currentProgress = 0
